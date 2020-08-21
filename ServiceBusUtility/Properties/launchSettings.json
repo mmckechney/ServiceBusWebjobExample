@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ServiceBusAdd": {
+      "commandName": "Project",
+      "commandLineArgs": "read --lockrenew 60 --messagehandling Abandon"
+    }
+  }
+}

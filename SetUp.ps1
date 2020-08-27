@@ -98,13 +98,14 @@ Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings $
 # Updating project configuration files 
 #####################################################
 Write-Host "Updating project configuration files";
-"{ $($sbAppSettings) }" | Out-File -FilePath "./ServiceBusWebJobCore/appsettings.json"
+"{ $($sbAppSettings) }" | Out-File -FilePath (Resolve-Path "./ServiceBusWebJobCore/appsettings.json").Path
 
-[xml]$appCfg = Get-Content -Path "./ServiceBusUtility/app.config"
+$appConfigFile = (Resolve-Path "./ServiceBusUtility/app.config").Path
+[xml]$appCfg = Get-Content -Path $appConfigFile
 
 ($appCfg.configuration.appSettings.add | ? {$_.key -eq "Microsoft.ServiceBus.ConnectionString" } ).value  = $sbString
 ($appCfg.configuration.appSettings.add | ? {$_.key -eq "Microsoft.ServiceBus.QueueName" }).value = $serviceBusQueue
-$appCfg.Save("./ServiceBusUtility/app.config")
+$appCfg.Save($appConfigFile)
 
 
 #####################################################
@@ -113,10 +114,11 @@ $appCfg.Save("./ServiceBusUtility/app.config")
 Write-Host "Building projects";
 dotnet restore "ServiceBusExample.sln" 
 dotnet build "ServiceBusExample.sln" --configuration Release
-$publishFolder = "./ServiceBusWebJobCore/publish"
-dotnet publish "./ServiceBusWebJobCore/ServiceBusWebJobCore.csproj" -c Release -o $publishFolder
+$publishFolder = (Resolve-Path ".").Path +"\ServiceBusWebJobCore\publish"
+dotnet publish ".\ServiceBusWebJobCore\ServiceBusWebJobCore.csproj" -c Release -o $publishFolder
 
-$webJobZip = "webjob.zip"
+$webJobZip = (Resolve-Path ".").Path + "\webjob.zip"
+Write-Host $webJobZip -ForegroundColor Green
 if(Test-path $webJobZip) 
 {
     Remove-item $webJobZip

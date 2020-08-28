@@ -142,12 +142,7 @@ $ZipHeaders = @{
     "Content-Disposition" = "attachment; filename=run.cmd"
     "Content-Type" = "application/zip"
 }
-Invoke-WebRequest -Uri https://$appName.scm.azurewebsites.net/api/triggeredwebjobs/$webjobName -Headers $ZipHeaders -InFile $webJobZip -ContentType "application/zip" -Method Put
-$Headers = @{
-    Authorization = $basicAuthValue
-}
-Invoke-WebRequest -Uri "https://$appName.scm.azurewebsites.net/api/triggeredwebjobs/$($webjobName)/run" -Headers $Headers -Method Post -ContentType "multipart/form-data"
-
+Invoke-WebRequest -Uri https://$appName.scm.azurewebsites.net/api/continuouswebjobs/$webjobName -Headers $ZipHeaders -InFile $webJobZip -ContentType "application/zip" -Method Put
 
 #####################################################
 # Output the values for reference

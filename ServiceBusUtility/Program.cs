@@ -78,7 +78,7 @@ namespace ServiceBusUtility
         private static async Task SendMessages(int count, int wait)
         {
             var connectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
-             var queueName = ConfigurationManager.AppSettings["Microsoft.ServiceBus.QueueName"];
+            var queueName = ConfigurationManager.AppSettings["Microsoft.ServiceBus.QueueName"];
 
             var queueClient = new QueueClient(connectionString, queueName);
             for (int i = 0; i < count; i++)

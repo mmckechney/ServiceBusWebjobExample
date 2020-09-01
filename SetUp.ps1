@@ -113,9 +113,9 @@ $appCfg.Save($appConfigFile)
 #####################################################
 Write-Host "Building projects";
 dotnet restore "ServiceBusExample.sln" 
-dotnet build "ServiceBusExample.sln" --configuration Release
+dotnet build "ServiceBusExample.sln" --configuration Debug
 $publishFolder = (Resolve-Path ".").Path +"\ServiceBusWebJobCore\publish"
-dotnet publish ".\ServiceBusWebJobCore\ServiceBusWebJobCore.csproj" -c Release -o $publishFolder
+dotnet publish ".\ServiceBusWebJobCore\ServiceBusWebJobCore.csproj" -c Debug -o $publishFolder
 
 $webJobZip = (Resolve-Path ".").Path + "\webjob.zip"
 Write-Host $webJobZip -ForegroundColor Green
@@ -139,7 +139,7 @@ $basicAuthValue = "Basic $encodedCreds"
 
 $ZipHeaders = @{
     Authorization = $basicAuthValue
-    "Content-Disposition" = "attachment; filename=run.cmd"
+    "Content-Disposition" = "attachment; filename=ServiceBusWebJobCore.exe"
     "Content-Type" = "application/zip"
 }
 Invoke-WebRequest -Uri https://$appName.scm.azurewebsites.net/api/continuouswebjobs/$webjobName -Headers $ZipHeaders -InFile $webJobZip -ContentType "application/zip" -Method Put

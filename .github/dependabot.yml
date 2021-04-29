@@ -1,0 +1,19 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: Microsoft.Azure.WebJobs.Extensions.ServiceBus
+    versions:
+    - 4.2.1
+    - 4.2.2
+  - dependency-name: Microsoft.Azure.ServiceBus
+    versions:
+    - 5.1.1
+    - 5.1.2
+  - dependency-name: Microsoft.Azure.WebJobs.Core
+    versions:
+    - 3.0.25
